@@ -24,5 +24,10 @@ chmod -R 777 /var/www/html/uploads
 # Make settings.php writable for installer
 [ -f /var/www/html/inc/settings.php ] && chmod 666 /var/www/html/inc/settings.php
 
+echo "Fixing Apache MPM conflict..."
+rm -f /etc/apache2/mods-enabled/mpm_event.*
+rm -f /etc/apache2/mods-enabled/mpm_worker.*
+a2enmod mpm_prefork >/dev/null 2>&1 || true
+
 echo "Starting Apache on port 80..."
 exec "$@"
