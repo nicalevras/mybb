@@ -2,10 +2,10 @@
 set -e
 
 # Copy MyBB files to persistent volume on first run
-if ! [ -f index.php ] || ! [ -f inc/class_core.php ]; then
-    echo "MyBB not found in /var/www/html - copying from source..."
-    tar cf - --one-file-system -C /usr/src/mybb-mybb_${MYBB_VERSION}/Upload . | tar xf -
-    echo "MyBB ${MYBB_VERSION} copied successfully."
+if ! [ -f /var/www/html/index.php ]; then
+    echo "MyBB not found in /var/www/html - copying from /usr/src/mybb..."
+    cp -r /usr/src/mybb/. /var/www/html/
+    echo "MyBB copied successfully."
 fi
 
 # Set ownership

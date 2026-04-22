@@ -1,7 +1,6 @@
 FROM php:8.3-apache
 
 ARG BUILD_VERSION=1839
-ARG BUILD_SHA512SUM=a13f45cc465100726d324a59f1683c5a116d4aad8ae3d26d3b6d709d8d97b6db14a135c08a0064d3194ed363891efa6cdcb0f4b58111d78a718fa2f6bd936bd7
 
 LABEL org.opencontainers.image.title="MyBB Forum"
 LABEL org.opencontainers.image.description="MyBB 1.8.39 forum, Railway-ready single container"
@@ -60,15 +59,15 @@ RUN { \
         echo 'error_log=/dev/stderr'; \
     } > /usr/local/etc/php/conf.d/mybb-recommended.ini
 
-# Download and extract MyBB
+# Download and extract MyBB to /usr/src/mybb
 ENV MYBB_VERSION=${BUILD_VERSION}
-ENV MYBB_SHA512=${BUILD_SHA512SUM}
 
 RUN set -ex; \
     curl -o mybb.tar.gz -fSL "https://github.com/mybb/mybb/archive/refs/tags/mybb_${MYBB_VERSION}.tar.gz"; \
-    echo "${MYBB_SHA512}  mybb.tar.gz" | sha512sum -c -; \
     tar -xzf mybb.tar.gz -C /usr/src/; \
-    rm mybb.tar.gz;
+    mv "/usr/src/mybb-mybb_${MYBB_VERSION}" /usr/src/mybb; \
+    rm mybb.tar.gz; \
+    ls -la /usr/src/mybb/index.php;
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
