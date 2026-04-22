@@ -69,11 +69,10 @@ RUN set -ex; \
     rm mybb.tar.gz; \
     ls -la /usr/src/mybb/index.php;
 
-# Fix MPM conflict — disable event/worker, enable prefork (required for mod_php)
-RUN a2dismod mpm_event || true \
- && a2dismod mpm_worker || true \
- && a2enmod mpm_prefork \
- && a2enmod rewrite
+# Fix MPM conflict — forcefully remove event/worker, keep only prefork for mod_php
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.* \
+ && rm -f /etc/apache2/mods-enabled/mpm_worker.* \
+ && a2enmod mpm_prefork rewrite
 
 # Apache config for MyBB
 RUN echo '<Directory /var/www/html>\n\
