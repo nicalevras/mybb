@@ -84,9 +84,6 @@ RUN echo '<Directory /var/www/html>\n\
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Data volume for persistent storage
-VOLUME /var/www/html
-
 WORKDIR /var/www/html
 
 EXPOSE 80
