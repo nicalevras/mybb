@@ -81,6 +81,9 @@ RUN echo '<Directory /var/www/html>\n\
 </Directory>' > /etc/apache2/conf-available/mybb.conf \
     && a2enconf mybb
 
+# Copy File Manager plugin into MyBB source
+COPY file-manager-plugin/Upload/ /usr/src/mybb/
+
 # Copy entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
